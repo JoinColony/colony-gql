@@ -1,0 +1,16 @@
+{
+  "name": "colony-gql",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "colony-data": "0.1.0",
+    "colony-js": "0.1.0",
+    "graphql": "^14.5.4",
+    "graphql-tag": "^2.10.1",
+    "graphql-tools": "^4.0.5"
+  },
+  "devDependencies": {
+    "typescript": "^3.6.3"
+  }
+}

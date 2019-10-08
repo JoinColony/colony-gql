@@ -1,0 +1,4 @@
+{
+  "private": true,
+  "workspaces": ["packages/colony-data", "packages/colony-gql", "packages/colony-js", "packages/colony-neue"]
+}

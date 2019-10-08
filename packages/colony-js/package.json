@@ -1,0 +1,12 @@
+{
+  "name": "colony-js",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "ethers": "^4.0.37"
+  },
+  "devDependencies": {
+    "typescript": "^3.6.3"
+  }
+}
