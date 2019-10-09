@@ -3,6 +3,7 @@ import { Network, getNetwork } from 'ethers/utils'
 
 import ColonyClient from './ColonyClient'
 import ColonyNetworkClient from './ColonyNetworkClient'
+import TokenClient from './TokenClient'
 
 const getColonyNetworkAddress = (network: Network | string) => {
   const { name: networkName } = getNetwork(network || 'homestead')
@@ -33,6 +34,7 @@ const getColonyNetworkClient = (network: Network | string = 'homestead') => {
 export {
   ColonyClient,
   ColonyNetworkClient,
+  TokenClient,
   getColonyNetworkClient,
   getColonyNetworkAddress
 }

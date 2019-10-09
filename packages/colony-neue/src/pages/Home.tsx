@@ -6,28 +6,23 @@ const Home = () => {
   const { loading, data } = useQuery(gql`
     {
       colony(addressOrName: "daobros.colony.joincolony.eth") {
-        profile {
-          name
-          avatarHash
-        }
+        id
         address
         ensName
+        balances {
+          amount
+          token {
+            address
+            symbol
+            name
+            decimals
+          }
+        }
         domains {
           id
-        }
-        taskCount
-        tasks {
-          id
-          specificationHash
-          status
-          dueDate
-        }
-      }
-      user(addressOrName: "scott.user.joincolony.eth") {
-        address
-        ensName
-        profile {
-          name
+          balance(addressOrName: "0x278133a25c71d71f7b197983E69B9fAa769722FD") {
+            amount
+          }
         }
       }
     }

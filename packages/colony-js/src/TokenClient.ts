@@ -2,10 +2,10 @@ import { Signer } from 'ethers'
 import { Provider } from 'ethers/providers'
 
 import BaseClient from './BaseClient.js'
-import COLONY_ABI from './abis/Colony.json'
+import TOKEN_ABI from './abis/Token.json'
 
-export default class ColonyClient extends BaseClient {
+export default class TokenClient extends BaseClient {
   constructor(addressOrName: string, signerOrProvider: Signer | Provider) {
-    super(addressOrName, COLONY_ABI, signerOrProvider)
+    super(addressOrName, TOKEN_ABI, signerOrProvider)
   }
 }

@@ -4,17 +4,30 @@ import { BigNumber } from 'ethers/utils'
 import { Context } from '../utils'
 import { TaskResolverArgs } from './task'
 import { DomainResolverArgs } from './domain'
+import { TokenBalanceResolverArgs } from './tokenBalance'
 
-const resolveColonyAddress = (
-  colonyClient: ColonyClient,
+export type ColonyResolverArgs = ColonyClient
+
+const resolveColonyId = async (
+  colonyClient: ColonyResolverArgs,
   _: void,
   { colonyNetworkClient }: Context,
+) => {
+  const address = await colonyClient.addressPromise
+  const [{
+    values: { colonyId },
+  }] = await colonyNetworkClient.getEvents('ColonyAdded', [null, address])
+  return colonyId.toString()
+}
+
+const resolveColonyAddress = (
+  colonyClient: ColonyResolverArgs,
 ) => {
   return colonyClient.addressPromise
 }
 
 const resolveColonyENSName = async (
-  colonyClient: ColonyClient,
+  colonyClient: ColonyResolverArgs,
   _: void,
   { colonyNetworkClient }: Context,
 ) => {
@@ -22,7 +35,8 @@ const resolveColonyENSName = async (
   return colonyNetworkClient.lookupRegisteredENSDomain(address)
 }
 
-const resolveColonyProfile = async (colonyClient: ColonyClient, _: void, { colonyData }: Context) => {
+// TODO: should have a separate resolver for ColonyProfile
+const resolveColonyProfile = async (colonyClient: ColonyResolverArgs, _: void, { colonyData }: Context) => {
   const colonyAddress = await colonyClient.addressPromise
   const db = await colonyData.getColonyProfileStore(colonyAddress)
   const name = db.get('name')
@@ -31,23 +45,23 @@ const resolveColonyProfile = async (colonyClient: ColonyClient, _: void, { colon
 }
 
 const resolveColonyDomains = async (
-  colonyClient: ColonyClient,
+  colonyClient: ColonyResolverArgs,
 ): Promise<DomainResolverArgs[]> => {
   const domainCount = await colonyClient.getDomainCount()
   return Promise.all(Array.from(Array(domainCount).keys()).map(id =>
-    resolveColonyDomain(colonyClient, { id: id.toString() })
+    resolveColonyDomain(colonyClient, { id: (id + 1).toString() })
   ))
 }
 
 const resolveColonyDomain = async (
-  colonyClient: ColonyClient,
+  colonyClient: ColonyResolverArgs,
   { id }: { id: string },
 ): Promise<DomainResolverArgs> => {
   const { skillId, fundingPotId } = await colonyClient.getDomain(id)
   return { colonyClient, id, skill: skillId, fundingPot: fundingPotId }
 }
 
-const resolveColonyFundingPots = async (colonyClient: ColonyClient) => {
+const resolveColonyFundingPots = async (colonyClient: ColonyResolverArgs) => {
   const fundingPotCount = await colonyClient.getFundingPotCount()
   // TODO: start at 0 or 1?
   return Array.from(Array(fundingPotCount).keys()).map(id => ({
@@ -57,14 +71,14 @@ const resolveColonyFundingPots = async (colonyClient: ColonyClient) => {
 }
 
 const resolveColonyTaskCount = async (
-  colonyClient: ColonyClient,
+  colonyClient: ColonyResolverArgs,
 ): Promise<TaskResolverArgs[]> => {
   const taskCount = await colonyClient.getTaskCount()
   return taskCount.toString()
 }
 
 const resolveColonyTasks = async (
-  colonyClient: ColonyClient,
+  colonyClient: ColonyResolverArgs,
 ): Promise<TaskResolverArgs[]> => {
   const taskCount = (await colonyClient.getTaskCount()).toNumber()
   // TODO: start at 0 or 1?
@@ -74,8 +88,8 @@ const resolveColonyTasks = async (
 }
 
 const resolveColonyTask = async (
-  colonyClient: ColonyClient,
-  { id }: { id: string }
+  colonyClient: ColonyResolverArgs,
+  { id }: { id: string },
 ): Promise<TaskResolverArgs> => {
   const {
     specificationHash,
@@ -102,7 +116,45 @@ const resolveColonyTask = async (
   }
 }
 
+const resolveColonyBalances = async (
+  colonyClient: ColonyResolverArgs,
+  _: void,
+  { colonyNetworkClient }: Context,
+): Promise<TokenBalanceResolverArgs[]> => {
+  const address = await colonyClient.addressPromise
+  const tokenClient = await colonyNetworkClient.getTokenClient()
+  const events = await tokenClient.getEvents(
+    'Transfer',
+    [null, address],
+    { address: null },
+  )
+  const addressesSet = events.reduce(
+    (addresses, event) => addresses.add(event.address),
+    new Set<string>(),
+  )
+  return Array.from(addressesSet).map(tokenAddress => ({
+    tokenAddress,
+    address,
+  }))
+}
+
+const resolveColonyBalance = async (
+  colonyClient: ColonyResolverArgs,
+  { addressOrName }: { addressOrName: string },
+  { colonyNetworkClient }: Context,
+): Promise<TokenBalanceResolverArgs> => {
+  const address = await colonyClient.addressPromise
+  const tokenAddress = await colonyNetworkClient.provider.resolveName(
+    addressOrName,
+  )
+  return {
+    tokenAddress,
+    address,
+  }
+}
+
 export default {
+  id: resolveColonyId,
   address: resolveColonyAddress,
   ensName: resolveColonyENSName,
   profile: resolveColonyProfile,
@@ -112,4 +164,6 @@ export default {
   taskCount: resolveColonyTaskCount,
   tasks: resolveColonyTasks,
   task: resolveColonyTask,
+  balances: resolveColonyBalances,
+  balance: resolveColonyBalance,
 }

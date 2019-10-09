@@ -10,18 +10,20 @@ export default gql`
 
   type Query {
     user(addressOrName: AddressOrName): User
-    colony(addressOrName: AddressOrName): Colony
+    colony(addressOrName: AddressOrName!): Colony
   }
 
   type Subscription {
-    user(addressOrName: AddressOrName): User
-    colony(addressOrName: AddressOrName): Colony
+    userUpdated(addressOrName: AddressOrName): User
+    colonyUpdated(addressOrName: AddressOrName!): Colony
   }
 
   type User {
     address: Address!
     ensName: ENSName
     profile: UserProfile
+    colonies: [Colony!]!
+    balances: [TokenBalance!]!
   }
 
   type UserProfile {
@@ -47,6 +49,8 @@ export default gql`
     taskCount: BigInt!
     tasks: [Task!]!
     task(id: ID!): Task
+    balances: [TokenBalance!]! # total balance in all pots
+    balance(addressOrName: AddressOrName!): TokenBalance
   }
 
   type ColonyProfile {
@@ -60,13 +64,15 @@ export default gql`
     parent: Domain
     skill: Skill
     fundingPot: FundingPot
+    balances: [TokenBalance!]!
+    balance(addressOrName: AddressOrName!): TokenBalance
   }
 
   type FundingPot {
     id: ID!
     type: FundingPotType!
     associated: FundingPotAssociated
-    payouts: [Payout!]!
+    payouts: [TokenBalance!]!
     payoutsWeCannotMake: Int!
   }
 
@@ -79,11 +85,6 @@ export default gql`
     PAYMENT
   }
 
-  type Payout {
-    token: Address!
-    amount: BigInt!
-  }
-
   type Task {
     id: ID!
     specificationHash: IPFSHash # required?
@@ -94,9 +95,9 @@ export default gql`
     completionDate: Date
     domain: Domain
     skills: [Skill!]!
-    manager: TaskRole
-    evaluator: TaskRole
-    worker: TaskRole
+    manager: TaskRole!
+    evaluator: TaskRole!
+    worker: TaskRole!
   }
 
   enum TaskStatus {
@@ -106,15 +107,27 @@ export default gql`
   }
 
   type TaskRole {
-    user: User
+    assignee: User
     rateFail: Boolean
     rating: TaskRating
-    payouts: [Payout!]!
+    payouts: [TokenBalance!]!
   }
 
   enum TaskRating {
     UNSATISFACTORY
     SATISFACTORY
     EXCELLENT
+  }
+
+  type Token {
+    address: Address!
+    name: String
+    symbol: String
+    decimals: Int
+  }
+
+  type TokenBalance {
+    token: Token!
+    amount: BigInt!
   }
 `

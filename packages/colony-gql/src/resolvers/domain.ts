@@ -1,5 +1,8 @@
 import { ColonyClient } from 'colony-js'
 
+import { Context } from '../utils'
+import { TokenBalanceResolverArgs } from './tokenBalance'
+
 export interface DomainResolverArgs {
   colonyClient: ColonyClient
   id: string
@@ -22,7 +25,30 @@ const resolveDomainParent = ({ id }: DomainResolverArgs) => {
   return '1'
 }
 
+const resolveDomainBalances = async (): Promise<TokenBalanceResolverArgs[]> => {
+  // TODO: get list of relevant tokens for domain
+  return []
+}
+
+const resolveDomainBalance = async (
+  { colonyClient, fundingPot }: DomainResolverArgs,
+  { addressOrName }: { addressOrName: string },
+  { colonyNetworkClient }: Context,
+): Promise<TokenBalanceResolverArgs> => {
+  const tokenAddress = await colonyNetworkClient.provider.resolveName(addressOrName)
+  const balance = await colonyClient.getFundingPotBalance(
+    fundingPot,
+    addressOrName,
+  )
+  return {
+    amount: balance.toString(),
+    tokenAddress,
+  }
+}
+
 export default {
   name: resolveDomainName,
   parent: resolveDomainParent,
+  balances: resolveDomainBalances,
+  balance: resolveDomainBalance,
 }

@@ -37,7 +37,25 @@ const resolveTaskSkills = async () => {
   return null
 }
 
+const resolveTaskManager = async () => {
+  // TODO: resolve manager
+  return null
+}
+
+const resolveTaskEvaluator = async () => {
+  // TODO: resolve evaluator
+  return null
+}
+
+const resolveTaskWorker = async () => {
+  // TODO: resolve worker
+  return null
+}
+
 export default {
   domain: resolveTaskDomain,
   skills: resolveTaskSkills,
+  manager: resolveTaskManager,
+  evaluator: resolveTaskEvaluator,
+  worker: resolveTaskWorker,
 }

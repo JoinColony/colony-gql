@@ -2,6 +2,8 @@ import userResolvers from './user'
 import colonyResolvers from './colony'
 import domainResolvers from './domain'
 import taskResolvers from './task'
+import tokenResolvers from './token'
+import tokenBalanceResolvers from './tokenBalance'
 import { Context } from '../utils'
 
 export default {
@@ -10,7 +12,10 @@ export default {
       _: undefined,
       { addressOrName }: { addressOrName: string },
       { colonyNetworkClient }: Context,
-    ) => colonyNetworkClient.provider.resolveName(addressOrName),
+    ) =>
+      addressOrName
+      ? colonyNetworkClient.provider.resolveName(addressOrName)
+      : colonyNetworkClient.signer.getAddress(),
     colony: async (
       _: undefined,
       { addressOrName }: { addressOrName: string },
@@ -21,6 +26,8 @@ export default {
   Colony: colonyResolvers,
   Domain: domainResolvers,
   Task: taskResolvers,
+  Token: tokenResolvers,
+  TokenBalance: tokenBalanceResolvers,
   FundingPotType: {
     'UNASSIGNED': 0,
     'DOMAIN': 1,
