@@ -1,4 +1,18 @@
 {
   "private": true,
-  "workspaces": ["packages/colony-data", "packages/colony-gql", "packages/colony-js", "packages/colony-neue"]
+  "workspaces": [
+    "packages/colony-data",
+    "packages/colony-gql",
+    "packages/colony-js",
+    "packages/colony-neue"
+  ],
+  "devDependencies": {
+    "prettier": "1.18.2"
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 4,
+    "semi": false,
+    "singleQuote": true
+  }
 }

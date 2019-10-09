@@ -1,7 +1,7 @@
 import { ColonyClient } from 'colony-js'
 
 import { DomainResolverArgs } from './domain'
-import { Context } from '../utils'
+import { SkillResolverArgs } from './skill'
 
 export interface TaskResolverArgs {
   colonyClient: ColonyClient
@@ -14,10 +14,10 @@ export interface TaskResolverArgs {
   dueDate: string
   fundingPot: string
   completionDate: string
+  skills: SkillResolverArgs[]
 
   // Need resolving
   domainId: string
-  skillIds: string[]
 }
 
 const resolveTaskDomain = async (
@@ -28,13 +28,8 @@ const resolveTaskDomain = async (
     colonyClient,
     id: domainId,
     skill: skillId,
-    fundingPot: fundingPotId
+    fundingPotId,
   }
-}
-
-const resolveTaskSkills = async () => {
-  // TODO: resolve skills
-  return null
 }
 
 const resolveTaskManager = async () => {
@@ -54,7 +49,6 @@ const resolveTaskWorker = async () => {
 
 export default {
   domain: resolveTaskDomain,
-  skills: resolveTaskSkills,
   manager: resolveTaskManager,
   evaluator: resolveTaskEvaluator,
   worker: resolveTaskWorker,

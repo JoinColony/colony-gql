@@ -1,5 +1,6 @@
 import { ColonyClient } from 'colony-js'
 import { BigNumber } from 'ethers/utils'
+import { AddressZero } from 'ethers/constants'
 
 import { Context } from '../utils'
 import { TaskResolverArgs } from './task'
@@ -58,7 +59,7 @@ const resolveColonyDomain = async (
   { id }: { id: string },
 ): Promise<DomainResolverArgs> => {
   const { skillId, fundingPotId } = await colonyClient.getDomain(id)
-  return { colonyClient, id, skill: skillId, fundingPot: fundingPotId }
+  return { colonyClient, id, skill: skillId, fundingPotId }
 }
 
 const resolveColonyFundingPots = async (colonyClient: ColonyResolverArgs) => {
@@ -112,7 +113,7 @@ const resolveColonyTask = async (
     fundingPot: fundingPotId.toString(),
     completionDate: completionTimestamp.toString(),
     domainId: domainId.toString(),
-    skillIds: skillIds.map((skillId: BigNumber) => skillId.toString()),
+    skills: skillIds.map((skillId: BigNumber) => skillId.toString()),
   }
 }
 
@@ -130,7 +131,7 @@ const resolveColonyBalances = async (
   )
   const addressesSet = events.reduce(
     (addresses, event) => addresses.add(event.address),
-    new Set<string>(),
+    new Set<string>([AddressZero]),
   )
   return Array.from(addressesSet).map(tokenAddress => ({
     tokenAddress,

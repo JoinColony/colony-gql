@@ -11,6 +11,7 @@ export default gql`
   type Query {
     user(addressOrName: AddressOrName): User
     colony(addressOrName: AddressOrName!): Colony
+    token(addressOrName: AddressOrName!): Token
   }
 
   type Subscription {

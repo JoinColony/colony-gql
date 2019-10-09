@@ -1,6 +1,8 @@
 import userResolvers from './user'
+import skillResolvers from './skill'
 import colonyResolvers from './colony'
 import domainResolvers from './domain'
+import fundingPotResolvers from './fundingPot'
 import taskResolvers from './task'
 import tokenResolvers from './token'
 import tokenBalanceResolvers from './tokenBalance'
@@ -23,8 +25,10 @@ export default {
     ) => colonyNetworkClient.getColonyClient(addressOrName),
   },
   User: userResolvers,
+  Skill: skillResolvers,
   Colony: colonyResolvers,
   Domain: domainResolvers,
+  FundingPot: fundingPotResolvers,
   Task: taskResolvers,
   Token: tokenResolvers,
   TokenBalance: tokenBalanceResolvers,
@@ -44,4 +48,18 @@ export default {
     'SATISFACTORY': 1,
     'EXCELLENT': 2,
   },
+  FundingPotAssociated: {
+    __resolveType: ({ type }: { type: number }) => {
+      switch (type) {
+        case 1:
+          return 'Domain'
+        
+        case 2:
+          return 'Task'
+      
+        default:
+          return null
+      }
+    },
+  }
 }

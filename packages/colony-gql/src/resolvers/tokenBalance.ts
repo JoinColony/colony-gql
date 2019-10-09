@@ -1,3 +1,5 @@
+import { AddressZero } from 'ethers/constants'
+
 import { Context } from '../utils'
 import { TokenResolverArgs } from './token'
 
@@ -22,6 +24,13 @@ const resolveTokenBalanceAmount = async (
 ) => {
   if (amount) {
     return amount
+  }
+  if (!address) {
+    throw new Error('Address must be provided if amount is omitted')
+  }
+  if (tokenAddress === AddressZero) {
+    const fetchedAmount = await colonyNetworkClient.provider.getBalance(address)
+    return fetchedAmount.toString()
   }
   const tokenClient = await colonyNetworkClient.getTokenClient(tokenAddress)
   const fetchedAmount = await tokenClient.balanceOf(address)

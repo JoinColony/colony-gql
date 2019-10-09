@@ -5,7 +5,7 @@ import gql from 'graphql-tag'
 const Home = () => {
   const { loading, data } = useQuery(gql`
     {
-      colony(addressOrName: "daobros.colony.joincolony.eth") {
+      colony(addressOrName: "burn.colony.joincolony.eth") {
         id
         address
         ensName
@@ -19,9 +19,8 @@ const Home = () => {
           }
         }
         domains {
-          id
-          balance(addressOrName: "0x278133a25c71d71f7b197983E69B9fAa769722FD") {
-            amount
+          fundingPot {
+            type
           }
         }
       }
