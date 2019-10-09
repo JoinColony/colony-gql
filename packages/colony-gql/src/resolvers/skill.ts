@@ -10,9 +10,7 @@ const resolveSkillName = () => {
 }
 
 // TODO: is this correct?
-const resolveSkillParent = (
-  id: SkillResolverArgs,
-) => {
+const resolveSkillParent = (id: SkillResolverArgs) => {
   // Root skill will not have parents
   if (id === '1') {
     return null

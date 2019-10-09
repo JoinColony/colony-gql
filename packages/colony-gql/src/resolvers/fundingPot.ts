@@ -15,19 +15,22 @@ export interface FundingPotResolverArgs {
   associatedTypeId: string
 }
 
-type FundingPotAssociatedResolverArgs = (DomainResolverArgs | TaskResolverArgs) & {
+type FundingPotAssociatedResolverArgs = (
+  | DomainResolverArgs
+  | TaskResolverArgs) & {
   type: number
 }
 
-const resolveAssociated = async (
-  { colonyClient, type, associatedTypeId }: FundingPotResolverArgs,
-): Promise<FundingPotAssociatedResolverArgs | null> => {
+const resolveAssociated = async ({
+  colonyClient,
+  type,
+  associatedTypeId,
+}: FundingPotResolverArgs): Promise<FundingPotAssociatedResolverArgs | null> => {
   switch (type) {
     case 1: {
-      const {
-        skillId,
-        fundingPotId,
-      } = await colonyClient.getDomain(associatedTypeId)
+      const { skillId, fundingPotId } = await colonyClient.getDomain(
+        associatedTypeId
+      )
       return {
         type,
         colonyClient,
@@ -36,7 +39,7 @@ const resolveAssociated = async (
         fundingPotId,
       }
     }
-    
+
     case 2: {
       const {
         specificationHash,
@@ -48,7 +51,7 @@ const resolveAssociated = async (
         domainId,
         skillIds,
       } = await colonyClient.getTask(associatedTypeId)
-    
+
       return {
         type,
         colonyClient,
@@ -63,7 +66,7 @@ const resolveAssociated = async (
         skills: skillIds.map((skillId: BigNumber) => skillId.toString()),
       }
     }
-  
+
     default:
       return null
   }

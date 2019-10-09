@@ -20,9 +20,10 @@ export interface TaskResolverArgs {
   domainId: string
 }
 
-const resolveTaskDomain = async (
-  { colonyClient, domainId }: TaskResolverArgs
-): Promise<DomainResolverArgs> => {
+const resolveTaskDomain = async ({
+  colonyClient,
+  domainId,
+}: TaskResolverArgs): Promise<DomainResolverArgs> => {
   const { skillId, fundingPotId } = await colonyClient.getDomain(domainId)
   return {
     colonyClient,

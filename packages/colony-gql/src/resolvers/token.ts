@@ -5,15 +5,11 @@ import { ETHER_NAME, ETHER_SYMBOL, ETHER_DECIMALS } from '../constants'
 
 export type TokenResolverArgs = TokenClient
 
-const resolveTokenAddress = async (
-  tokenClient: TokenResolverArgs,
-) => {
+const resolveTokenAddress = async (tokenClient: TokenResolverArgs) => {
   return tokenClient.addressPromise
 }
 
-const resolveTokenName = async (
-  tokenClient: TokenResolverArgs,
-) => {
+const resolveTokenName = async (tokenClient: TokenResolverArgs) => {
   const address = await tokenClient.addressPromise
   if (address === AddressZero) {
     return ETHER_NAME
@@ -26,9 +22,7 @@ const resolveTokenName = async (
   }
 }
 
-const resolveTokenSymbol = async (
-  tokenClient: TokenResolverArgs,
-) => {
+const resolveTokenSymbol = async (tokenClient: TokenResolverArgs) => {
   const address = await tokenClient.addressPromise
   if (address === AddressZero) {
     return ETHER_SYMBOL
@@ -41,9 +35,7 @@ const resolveTokenSymbol = async (
   }
 }
 
-const resolveTokenDecimals = async (
-  tokenClient: TokenResolverArgs,
-) => {
+const resolveTokenDecimals = async (tokenClient: TokenResolverArgs) => {
   const address = await tokenClient.addressPromise
   if (address === AddressZero) {
     return ETHER_DECIMALS

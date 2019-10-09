@@ -7,12 +7,16 @@ const resolveUserAddress = (userAddress: string) => {
 const resolveUserENSName = (
   userAddress: string,
   _: void,
-  { colonyNetworkClient }: Context,
+  { colonyNetworkClient }: Context
 ) => {
   return colonyNetworkClient.lookupRegisteredENSDomain(userAddress)
 }
 
-const resolveUserProfile = async (userAddress: string, _: void, { colonyData }: Context) => {
+const resolveUserProfile = async (
+  userAddress: string,
+  _: void,
+  { colonyData }: Context
+) => {
   const db = await colonyData.getUserProfileStore(userAddress)
   const name = db.get('name')
   const bio = db.get('bio')

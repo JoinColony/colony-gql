@@ -9,7 +9,7 @@ import COLONY_NETWORK_ABI from './abis/ColonyNetwork.json'
 
 export default class ColonyNetworkClient extends BaseClient {
   colonyClients = new Map<string, ColonyClient>() // TODO: clear on network client changes
-  tokenClients = new Map<string, TokenClient>();
+  tokenClients = new Map<string, TokenClient>()
 
   constructor(addressOrName: string, signerOrProvider: Signer | Provider) {
     super(addressOrName, COLONY_NETWORK_ABI, signerOrProvider)

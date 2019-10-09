@@ -78,7 +78,6 @@ export default gql`
   }
 
   union FundingPotAssociated = Domain | Task # also Payment
-
   enum FundingPotType {
     UNASSIGNED
     DOMAIN

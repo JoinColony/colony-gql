@@ -12,7 +12,7 @@ export interface TokenBalanceResolverArgs {
 const resolveTokenBalanceToken = async (
   { tokenAddress }: TokenBalanceResolverArgs,
   _: void,
-  { colonyNetworkClient }: Context,
+  { colonyNetworkClient }: Context
 ): Promise<TokenResolverArgs> => {
   return colonyNetworkClient.getTokenClient(tokenAddress)
 }
@@ -20,7 +20,7 @@ const resolveTokenBalanceToken = async (
 const resolveTokenBalanceAmount = async (
   { tokenAddress, address, amount }: TokenBalanceResolverArgs,
   _: void,
-  { colonyNetworkClient }: Context,
+  { colonyNetworkClient }: Context
 ) => {
   if (amount) {
     return amount

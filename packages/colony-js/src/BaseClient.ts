@@ -15,7 +15,10 @@ export default class BaseClient extends Contract {
   async getEvents(
     eventName: string,
     params: any[] = [],
-    { fromBlock = 1, address }: { fromBlock?: number, address?: string | null } = {},
+    {
+      fromBlock = 1,
+      address,
+    }: { fromBlock?: number; address?: string | null } = {}
   ): Promise<DecodedLog[]> {
     const filterFunction = this.filters[eventName]
     if (!filterFunction) {
@@ -25,7 +28,7 @@ export default class BaseClient extends Contract {
     const logs = await this.provider.getLogs({
       ...filter,
       fromBlock,
-      address: address === undefined ? filter.address : (address || undefined),
+      address: address === undefined ? filter.address : address || undefined,
     })
     const events = logs.map(log => ({
       ...this.interface.parseLog(log),

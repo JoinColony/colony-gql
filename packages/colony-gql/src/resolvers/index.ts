@@ -13,15 +13,15 @@ export default {
     user: async (
       _: undefined,
       { addressOrName }: { addressOrName: string },
-      { colonyNetworkClient }: Context,
+      { colonyNetworkClient }: Context
     ) =>
       addressOrName
-      ? colonyNetworkClient.provider.resolveName(addressOrName)
-      : colonyNetworkClient.signer.getAddress(),
+        ? colonyNetworkClient.provider.resolveName(addressOrName)
+        : colonyNetworkClient.signer.getAddress(),
     colony: async (
       _: undefined,
       { addressOrName }: { addressOrName: string },
-      { colonyNetworkClient }: Context,
+      { colonyNetworkClient }: Context
     ) => colonyNetworkClient.getColonyClient(addressOrName),
   },
   User: userResolvers,
@@ -33,33 +33,33 @@ export default {
   Token: tokenResolvers,
   TokenBalance: tokenBalanceResolvers,
   FundingPotType: {
-    'UNASSIGNED': 0,
-    'DOMAIN': 1,
-    'TASK': 2,
-    'PAYMENT': 3,
+    UNASSIGNED: 0,
+    DOMAIN: 1,
+    TASK: 2,
+    PAYMENT: 3,
   },
   TaskStatus: {
-    'ACTIVE': 0,
-    'CANCELLED': 1,
-    'FINALIZED': 2,
+    ACTIVE: 0,
+    CANCELLED: 1,
+    FINALIZED: 2,
   },
   TaskRating: {
-    'UNSATISFACTORY': 0,
-    'SATISFACTORY': 1,
-    'EXCELLENT': 2,
+    UNSATISFACTORY: 0,
+    SATISFACTORY: 1,
+    EXCELLENT: 2,
   },
   FundingPotAssociated: {
     __resolveType: ({ type }: { type: number }) => {
       switch (type) {
         case 1:
           return 'Domain'
-        
+
         case 2:
           return 'Task'
-      
+
         default:
           return null
       }
     },
-  }
+  },
 }

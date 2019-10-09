@@ -30,7 +30,10 @@ const resolveDomainParent = ({ id }: DomainResolverArgs) => {
   return '1'
 }
 
-const resolveFundingPot = async ({ colonyClient, fundingPotId }: DomainResolverArgs): Promise<FundingPotResolverArgs> => {
+const resolveFundingPot = async ({
+  colonyClient,
+  fundingPotId,
+}: DomainResolverArgs): Promise<FundingPotResolverArgs> => {
   const {
     associatedType,
     associatedTypeId,
@@ -53,12 +56,14 @@ const resolveDomainBalances = async (): Promise<TokenBalanceResolverArgs[]> => {
 const resolveDomainBalance = async (
   { colonyClient, fundingPotId }: DomainResolverArgs,
   { addressOrName }: { addressOrName: string },
-  { colonyNetworkClient }: Context,
+  { colonyNetworkClient }: Context
 ): Promise<TokenBalanceResolverArgs> => {
-  const tokenAddress = await colonyNetworkClient.provider.resolveName(addressOrName)
+  const tokenAddress = await colonyNetworkClient.provider.resolveName(
+    addressOrName
+  )
   const balance = await colonyClient.getFundingPotBalance(
     fundingPotId,
-    addressOrName,
+    addressOrName
   )
   return {
     amount: balance.toString(),

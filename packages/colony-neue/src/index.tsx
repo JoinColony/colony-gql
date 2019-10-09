@@ -28,13 +28,13 @@ const client = new ApolloClient({
       if (graphQLErrors)
         graphQLErrors.forEach(({ message, locations, path }) =>
           console.log(
-            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-          ),
-        );
+            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+          )
+        )
     }),
-    new SchemaLink({ schema, context })
+    new SchemaLink({ schema, context }),
   ]),
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
 })
 
 const App = () => (

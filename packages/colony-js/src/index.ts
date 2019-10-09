@@ -18,7 +18,7 @@ const getColonyNetworkAddress = (network: Network | string) => {
 
     case 'goerli':
       return '0x79073fc2117dD054FCEdaCad1E7018C9CbE3ec0B'
-  
+
     default:
       throw new Error(`Undeployed network: ${networkName}`)
   }
@@ -27,7 +27,7 @@ const getColonyNetworkAddress = (network: Network | string) => {
 const getColonyNetworkClient = (network: Network | string = 'homestead') => {
   return new ColonyNetworkClient(
     getColonyNetworkAddress(network),
-    ethers.getDefaultProvider(network),
+    ethers.getDefaultProvider(network)
   )
 }
 
@@ -36,7 +36,7 @@ export {
   ColonyNetworkClient,
   TokenClient,
   getColonyNetworkClient,
-  getColonyNetworkAddress
+  getColonyNetworkAddress,
 }
 
 export default getColonyNetworkClient

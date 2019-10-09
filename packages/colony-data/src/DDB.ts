@@ -42,44 +42,56 @@ export default class DDB {
 
   async getUserProfileStore(walletAddress: string) {
     const orbitdb = await this.orbitdb
-    const db = await orbitdb.keyvalue(`network.${this.chainId}.user.${walletAddress}`, {
-      accessController: {
-        write: ['*'],
-      },
-    } as any)
+    const db = await orbitdb.keyvalue(
+      `network.${this.chainId}.user.${walletAddress}`,
+      {
+        accessController: {
+          write: ['*'],
+        },
+      } as any
+    )
     await db.load()
     return db
   }
 
   async getTaskStore(colonyAddress: string, taskId: string) {
     const orbitdb = await this.orbitdb
-    const db = await orbitdb.keyvalue(`network.${this.chainId}.colony.${colonyAddress}.task.${taskId}`, {
-      accessController: {
-        write: ['*'],
-      },
-    } as any)
+    const db = await orbitdb.keyvalue(
+      `network.${this.chainId}.colony.${colonyAddress}.task.${taskId}`,
+      {
+        accessController: {
+          write: ['*'],
+        },
+      } as any
+    )
     await db.load()
     return db
   }
 
   async getTaskCommentsStore(colonyAddress: string, taskId: string) {
     const orbitdb = await this.orbitdb
-    const db = await orbitdb.feed(`network.${this.chainId}.colony.${colonyAddress}.task.${taskId}.comments`, {
-      accessController: {
-        write: ['*'],
-      },
-    } as any)
+    const db = await orbitdb.feed(
+      `network.${this.chainId}.colony.${colonyAddress}.task.${taskId}.comments`,
+      {
+        accessController: {
+          write: ['*'],
+        },
+      } as any
+    )
     await db.load()
     return db
   }
 
   async getColonyProfileStore(colonyAddress: string) {
     const orbitdb = await this.orbitdb
-    const db = await orbitdb.keyvalue(`network.${this.chainId}.colony.${colonyAddress}`, {
-      accessController: {
-        write: ['*'],
-      },
-    } as any)
+    const db = await orbitdb.keyvalue(
+      `network.${this.chainId}.colony.${colonyAddress}`,
+      {
+        accessController: {
+          write: ['*'],
+        },
+      } as any
+    )
     db.events.on('replicated', () => {
       console.log(db)
     })
