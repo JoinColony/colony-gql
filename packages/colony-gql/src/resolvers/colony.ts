@@ -6,6 +6,7 @@ import { Context } from '../utils'
 import { TaskResolverArgs } from './task'
 import { DomainResolverArgs } from './domain'
 import { TokenBalanceResolverArgs } from './tokenBalance'
+import { FundingPotResolverArgs } from './fundingPot'
 
 export type ColonyResolverArgs = ColonyClient
 
@@ -68,13 +69,27 @@ const resolveColonyDomain = async (
   return { colonyClient, id, skill: skillId, fundingPotId }
 }
 
-const resolveColonyFundingPots = async (colonyClient: ColonyResolverArgs) => {
+const resolveColonyFundingPots = async (
+  colonyClient: ColonyResolverArgs
+): Promise<FundingPotResolverArgs[]> => {
   const fundingPotCount = await colonyClient.getFundingPotCount()
   // TODO: start at 0 or 1?
-  return Array.from(Array(fundingPotCount).keys()).map(id => ({
-    colonyClient,
-    id: id.toString(),
-  }))
+  return Promise.all(
+    Array.from(Array(fundingPotCount.toNumber()).keys()).map(async id => {
+      const {
+        associatedType,
+        associatedTypeId,
+        payoutsWeCannotMake,
+      } = await colonyClient.getFundingPot(id + 1)
+      return {
+        colonyClient,
+        id: (id + 1).toString(),
+        type: associatedType,
+        associatedTypeId: associatedTypeId.toString(),
+        payoutsWeCannotMake: payoutsWeCannotMake.toString(),
+      }
+    })
+  )
 }
 
 const resolveColonyTaskCount = async (

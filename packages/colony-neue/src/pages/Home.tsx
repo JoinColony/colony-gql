@@ -6,6 +6,12 @@ const Home = () => {
   const { loading, data } = useQuery(gql`
     {
       colony(addressOrName: "burn.colony.joincolony.eth") {
+        fundingPots {
+          type
+          associated {
+            id
+          }
+        }
         id
         address
         ensName
@@ -26,7 +32,11 @@ const Home = () => {
       }
     }
   `)
-  return loading ? <p>Loading</p> : <p>Test: {JSON.stringify(data)}</p>
+  return loading ? (
+    <p>Loading</p>
+  ) : (
+    <pre>Test: {JSON.stringify(data, null, 2)}</pre>
+  )
 }
 
 export default Home

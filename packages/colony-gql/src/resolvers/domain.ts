@@ -43,8 +43,8 @@ const resolveFundingPot = async ({
     colonyClient,
     id: fundingPotId,
     type: associatedType,
-    associatedTypeId,
-    payoutsWeCannotMake,
+    associatedTypeId: associatedTypeId.toString(),
+    payoutsWeCannotMake: payoutsWeCannotMake.toString(),
   }
 }
 
