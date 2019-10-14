@@ -20,7 +20,7 @@ const resolveDomainName = () => {
   return null
 }
 
-const resolveDomainParent = ({ id }: DomainResolverArgs) => {
+const resolveDomainParent = ({ id }: DomainResolverArgs): DomainResolverArgs | null => {
   // Root domain will not have parents
   if (id === '1') {
     return null

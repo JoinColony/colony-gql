@@ -14,7 +14,7 @@ const resolveColonyId = async (
   colonyClient: ColonyResolverArgs,
   _: void,
   { colonyNetworkClient }: Context
-) => {
+): Promise<string> => {
   const address = await colonyClient.addressPromise
   const [
     {
@@ -24,7 +24,9 @@ const resolveColonyId = async (
   return colonyId.toString()
 }
 
-const resolveColonyAddress = (colonyClient: ColonyResolverArgs) => {
+const resolveColonyAddress = (
+  colonyClient: ColonyResolverArgs
+): Promise<string> => {
   return colonyClient.addressPromise
 }
 
@@ -32,7 +34,7 @@ const resolveColonyENSName = async (
   colonyClient: ColonyResolverArgs,
   _: void,
   { colonyNetworkClient }: Context
-) => {
+): Promise<string> => {
   const address = await colonyClient.addressPromise
   return colonyNetworkClient.lookupRegisteredENSDomain(address)
 }
@@ -42,7 +44,7 @@ const resolveColonyProfile = async (
   colonyClient: ColonyResolverArgs,
   _: void,
   { colonyData }: Context
-) => {
+): Promise<{ name?: string; avatarHash?: string }> => {
   const colonyAddress = await colonyClient.addressPromise
   const db = await colonyData.getColonyProfileStore(colonyAddress)
   const name = db.get('name')
@@ -94,7 +96,7 @@ const resolveColonyFundingPots = async (
 
 const resolveColonyTaskCount = async (
   colonyClient: ColonyResolverArgs
-): Promise<TaskResolverArgs[]> => {
+): Promise<string> => {
   const taskCount = await colonyClient.getTaskCount()
   return taskCount.toString()
 }

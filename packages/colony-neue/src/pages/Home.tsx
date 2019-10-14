@@ -6,27 +6,12 @@ const Home = () => {
   const { loading, data } = useQuery(gql`
     {
       colony(addressOrName: "burn.colony.joincolony.eth") {
-        fundingPots {
-          type
-          associated {
-            id
-          }
-        }
-        id
-        address
-        ensName
-        balances {
-          amount
-          token {
-            address
-            symbol
-            name
-            decimals
-          }
-        }
-        domains {
-          fundingPot {
-            type
+        task(id: 1) {
+          manager {
+            assignee {
+              address
+            }
+            rateFail
           }
         }
       }

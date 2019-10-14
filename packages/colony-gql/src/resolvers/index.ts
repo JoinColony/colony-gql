@@ -1,6 +1,6 @@
-import userResolvers from './user'
+import userResolvers, { UserResolverArgs } from './user'
 import skillResolvers from './skill'
-import colonyResolvers from './colony'
+import colonyResolvers, { ColonyResolverArgs } from './colony'
 import domainResolvers from './domain'
 import fundingPotResolvers from './fundingPot'
 import taskResolvers from './task'
@@ -11,18 +11,25 @@ import { Context } from '../utils'
 export default {
   Query: {
     user: async (
-      _: undefined,
+      _: void,
       { addressOrName }: { addressOrName: string },
-      { colonyNetworkClient }: Context
-    ) =>
-      addressOrName
-        ? colonyNetworkClient.provider.resolveName(addressOrName)
-        : colonyNetworkClient.signer.getAddress(),
+      { colonyNetworkClient, colonyData }: Context
+    ): Promise<UserResolverArgs> => {
+      const address = addressOrName
+        ? await colonyNetworkClient.provider.resolveName(addressOrName)
+        : await colonyNetworkClient.signer.getAddress()
+      const userStore = await colonyData.getUserProfileStore(address)
+      return {
+        userStore,
+        address,
+      }
+    },
     colony: async (
-      _: undefined,
+      _: void,
       { addressOrName }: { addressOrName: string },
       { colonyNetworkClient }: Context
-    ) => colonyNetworkClient.getColonyClient(addressOrName),
+    ): Promise<ColonyResolverArgs> =>
+      colonyNetworkClient.getColonyClient(addressOrName),
   },
   User: userResolvers,
   Skill: skillResolvers,

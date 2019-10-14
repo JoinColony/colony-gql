@@ -1,31 +1,47 @@
+import { KeyValueStore } from 'orbit-db-kvstore'
+
 import { Context } from '../utils'
 
-const resolveUserAddress = (userAddress: string) => {
-  return userAddress
+export interface UserResolverArgs {
+  userStore: KeyValueStore<any>
+  address: string
 }
 
 const resolveUserENSName = (
-  userAddress: string,
+  { address }: UserResolverArgs,
   _: void,
   { colonyNetworkClient }: Context
 ) => {
-  return colonyNetworkClient.lookupRegisteredENSDomain(userAddress)
+  return colonyNetworkClient.lookupRegisteredENSDomain(address)
 }
 
-const resolveUserProfile = async (
-  userAddress: string,
+const resolveUserName = async (
+  { userStore }: UserResolverArgs,
   _: void,
   { colonyData }: Context
 ) => {
-  const db = await colonyData.getUserProfileStore(userAddress)
-  const name = db.get('name')
-  const bio = db.get('bio')
-  const avatarHash = db.get('avatarHash')
-  return { name, bio, avatarHash }
+  return userStore.get('name')
+}
+
+const resolveUserBio = async (
+  { userStore }: UserResolverArgs,
+  _: void,
+  { colonyData }: Context
+) => {
+  return userStore.get('bio')
+}
+
+const resolveUserAvatarHash = async (
+  { userStore }: UserResolverArgs,
+  _: void,
+  { colonyData }: Context
+) => {
+  return userStore.get('avatarHash')
 }
 
 export default {
-  address: resolveUserAddress,
   ensName: resolveUserENSName,
-  profile: resolveUserProfile,
+  name: resolveUserName,
+  bio: resolveUserBio,
+  avatarHash: resolveUserAvatarHash,
 }

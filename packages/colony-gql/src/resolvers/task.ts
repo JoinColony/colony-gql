@@ -33,19 +33,22 @@ const resolveTaskDomain = async ({
   }
 }
 
-const resolveTaskManager = async () => {
-  // TODO: resolve manager
-  return null
+const resolveTaskManager = async ({ id, colonyClient }: TaskResolverArgs) => {
+  const role = 0
+  const { rateFail, rating, user } = await colonyClient.getTaskRole(id, role)
+  return { assignee: user, rateFail, rating, role }
 }
 
-const resolveTaskEvaluator = async () => {
-  // TODO: resolve evaluator
-  return null
+const resolveTaskEvaluator = async ({ id, colonyClient }: TaskResolverArgs) => {
+  const role = 1
+  const { rateFail, rating, user } = await colonyClient.getTaskRole(id, role)
+  return { assignee: user, rateFail, rating, role }
 }
 
-const resolveTaskWorker = async () => {
-  // TODO: resolve worker
-  return null
+const resolveTaskWorker = async ({ id, colonyClient }: TaskResolverArgs) => {
+  const role = 2
+  const { rateFail, rating, user } = await colonyClient.getTaskRole(id, role)
+  return { assignee: user, rateFail, rating, role }
 }
 
 export default {

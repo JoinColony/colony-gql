@@ -22,12 +22,8 @@ export default gql`
   type User {
     address: Address!
     ensName: ENSName
-    profile: UserProfile
     colonies: [Colony!]!
     balances: [TokenBalance!]!
-  }
-
-  type UserProfile {
     name: String
     bio: String
     avatarHash: IPFSHash
